@@ -16,10 +16,17 @@
 package com.example.cupcake
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.cupcake.views.CustomGridLayout
+import kotlin.random.Random
 
 /**
  * Activity for cupcake order flow.
@@ -31,12 +38,33 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Retrieve NavController from the NavHostFragment
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        navController = navHostFragment.navController
-
-        // Set up the action bar for use with the NavController
-        setupActionBarWithNavController(navController)
+        setContent {
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                CustomGridLayout(
+                    modifier = Modifier,
+                    columnsCount = 3
+                ) {
+                    repeat(50) {
+                        Box(
+                            modifier = Modifier
+                                .width(Random.nextInt(50, 200).dp)
+                                .height(Random.nextInt(50, 200).dp)
+                                .background(Color(Random.nextLong(0xFFFFFFFF)))
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.cupcake),
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize()
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /**
